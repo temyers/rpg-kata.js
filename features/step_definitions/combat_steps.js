@@ -42,9 +42,13 @@ When('{word} heals themself {int}', function (subject,heal) {
   characters[subject].heal({ heal });
 });
 
-Then("{word}'s health should be {int}", function (name,health) {
+Then("{word}'s health should be {int}", thenCharactersHealthShouldBe);
+Then("{word} health should be {int}", thenCharactersHealthShouldBe);
+
+function thenCharactersHealthShouldBe(name,health){
   expect(characters[name].health).to.equal(health)
-});
+
+}
 
 Given('{word} has {int} health', function (name,health) {
   characters[name].health = health

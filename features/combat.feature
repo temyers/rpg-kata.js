@@ -19,6 +19,7 @@ Feature: Combat
     - Characters have an attack Max Range.
       - *Melee* fighters have a range of 2 meters.
       - *Ranged* fighters have a range of 20 meters.
+      - Characters must be in range to deal damage to a target.
 
 
 
@@ -41,9 +42,14 @@ Scenario: Create a character
   And Bill's level should be 1
   And Bill should be alive
 
-Scenario: Attack a character
-  When Bill attacks Ben with 5 damage
-  Then Ben's health should be 995
+Scenario Outline: Attack a character in range <class>
+  When <subject> attacks <target> with 5 damage
+  Then <target> health should be 995
+
+  Examples:
+  | subject | target | class  |
+  | Bill    | Ben    | melee  |
+  | Max     | Bill   | ranged |
 
 Scenario: Kill a character
   But Ben has 10 health
@@ -83,13 +89,9 @@ Scenario: Attack weaker level character
   When Ben attacks Bill with 20 damage
   Then Bill's health should be 970
 
-Scenario: Cannot attack character too far away
-  When Bill attempts to attack Max
-  Then the attack should fail
-
 Scenario Outline: Cannot attack character too far away - <why>
-  When <subject> attempts to attack <target>
-  Then the attack should fail
+  When <subject> attacks <target> with 20 damage
+  Then <target>'s health should be 1000
 
   Examples:
   | subject | target | why    |
