@@ -10,9 +10,14 @@ Given("characters Bill, Ben have been created", function () {
   characters.Ben = character();
 });
 
+Given('{word} is level {int}', function (name,level) {
+  characters[name].level = Number(level)
+});
+
 Then("{word}'s level should be {int}", function (name, level) {
   expect(characters[name].level).to.equal(level);
 });
+
 
 When('{word} attacks {word} with {int} damage', function (subject,target,damage) {
   characters[subject].attack({ target: characters[target], damage });

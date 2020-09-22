@@ -13,6 +13,10 @@ Feature: Combat
       - Healing cannot raise health above 1000
       - A Character can only Heal itself.
     - A Character cannot Deal Damage to itself.
+    -. When dealing damage:
+      - If the target is 5 or more Levels above the attacker, Damage is reduced by 50%
+      - If the target is 5 or more levels below the attacker, Damage is increased by 50%
+
 
 Background: Characters exist
   Given characters Bill, Ben have been created
@@ -53,3 +57,8 @@ Scenario: Heal to full health
 Scenario: Self harm
   When Bill attacks Bill with 5 damage
   Then Bill's health should be 1000
+
+Scenario: Attack higher level character
+  Given Ben is level 6
+  When Bill attacks Ben with 20 damage
+  Then Ben's health should be 990
