@@ -12,3 +12,7 @@ When('I create a character', function () {
 Then('the characters health should be {int}', function (health) {
   expect(myCharacter.health).to.equal(health)
 });
+
+Then('the characters level should be {int}', function (level) {
+  expect(myCharacter.level).to.equal(level)
+});
