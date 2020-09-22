@@ -7,59 +7,39 @@ var myCharacter;
 
 var characters = {};
 
-When("I create a character", function () {
-  myCharacter = character();
-});
-
-Then("the characters health should be {int}", function (health) {
-  expect(myCharacter.health).to.equal(health);
-});
-
-Then("the characters level should be {int}", function (level) {
-  expect(myCharacter.level).to.equal(level);
-});
-
-Then("the character should be alive", function () {
-  expect(myCharacter.isAlive).to.equal(true);
-});
-
 Given("characters Bill, Ben have been created", function () {
   characters.Bill = character();
   characters.Ben = character();
 });
 
-When("Bill attacks Ben with {int} damage", function (damage) {
-  characters.Bill.attack({ target: characters.Ben, damage });
+Then("{word}'s level should be {int}", function (name, level) {
+  expect(characters[name].level).to.equal(level);
 });
 
-When('Bill attacks Bill with damage {int}', function (damage) {
-  characters.Bill.attack({ target: characters.Bill, damage });
+When('{word} attacks {word} with {int} damage', function (subject,target,damage) {
+  characters[subject].attack({ target: characters[target], damage });
 });
 
-When('Bill heals Ben {int}', function (heal) {
-  characters.Bill.heal({ target: characters.Ben, heal });
+When('{word} heals {word} {int}', function (subject,target,heal) {
+  characters[subject].heal({ target: characters[target], heal });
 });
 
-Then("Ben's health should be {int}", function (health) {
-  expect(characters.Ben.health).to.equal(health)
+Then("{word}'s health should be {int}", function (name,health) {
+  expect(characters[name].health).to.equal(health)
 });
 
-Then('Bill\'s health should be {int}', function (health) {
-  expect(characters.Bill.health).to.equal(health)
+Given('{word} has {int} health', function (name,health) {
+  characters[name].health = health
 });
 
-Given('Ben has {int} health', function (health) {
-  characters.Ben.health = health
+Given('{word} has died', function (name) {
+  characters[name].kill()
 });
 
-Given('Ben has died', function () {
-  characters.Ben.kill()
+Then('{word} should be dead', function (name) {
+  expect(characters[name].isAlive).to.be.false
 });
 
-Then('Ben should be dead', function () {
-  expect(characters.Ben.isAlive).to.be.false
-});
-
-Then('Ben should be alive', function () {
-  expect(characters.Ben.isAlive).to.be.true
+Then('{word} should be alive', function (name) {
+  expect(characters[name].isAlive).to.be.true
 });
