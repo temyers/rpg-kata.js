@@ -51,3 +51,7 @@ Given('Ben has died', function () {
 Then('Ben should be dead', function () {
   expect(characters.Ben.isAlive).to.be.false
 });
+
+Then('Ben should be alive', function () {
+  expect(characters.Ben.isAlive).to.be.true
+});

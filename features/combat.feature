@@ -10,6 +10,7 @@ Feature: Combat
       - When damage received exceeds current Health, Health becomes 0 and the character dies
     - A Character can Heal a Character.
       - Dead characters cannot be healed
+      - Healing cannot raise health above 1000
 
 Scenario: Create a character
   When I create a character
@@ -35,3 +36,10 @@ Scenario: Attempt resurrection
   When Bill heals Ben 5
   Then Ben should be dead
   And Ben's health should be 0
+
+Scenario: Heal a character
+  Given characters Bill, Ben have been created
+  But Ben has 10 health
+  When Bill heals Ben 10
+  Then Ben should be alive
+  And Ben's health should be 20
