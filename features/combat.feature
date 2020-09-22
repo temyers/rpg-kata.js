@@ -22,14 +22,18 @@ Feature: Combat
 
 
 Background: Characters exist
-  Given characters Bill, Ben, Max, Paddy have been created
+  Given the following characters exist:
+    | name  | class  |
+    | Bill  | melee  |
+    | Ben   | melee  |
+    | Max   | ranged |
+    | Paddy | ranged |
   And the characters are at location:
    | name  | x | y  |
    | Bill  | 0 | 0  |
    | Ben   | 0 | 2  |
    | Max   | 0 | 20 |
    | Paddy | 0 | 50 |
-  
 
 Scenario: Create a character
   Then Bill's health should be 1000
@@ -77,3 +81,7 @@ Scenario: Attack weaker level character
   Given Ben is level 6
   When Ben attacks Bill with 20 damage
   Then Bill's health should be 970
+
+Scenario: Cannot attack character too far away
+  When Bill attempts to attack Max
+  Then the attack should fail

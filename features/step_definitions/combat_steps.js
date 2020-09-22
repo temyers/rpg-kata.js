@@ -3,14 +3,15 @@ const { Before, Given, When, Then } = require("cucumber");
 const { character } = require("../../lib/Character");
 const { expect } = require("chai");
 const { coordinate } = require("../../lib/Coordinate");
+const { fail } = require("assert");
 
 var characters = {};
+var attackCommand;
 
-Given("characters Bill, Ben, Max, Paddy have been created", function () {
-  characters.Bill = character();
-  characters.Ben = character();
-  characters.Max = character();
-  characters.Paddy = character();
+Given('the following characters exist:', function (dataTable) {
+  dataTable.hashes().forEach(row => {
+    characters[row.name] = character(row.class)
+  })
 });
 
 Given('the characters are at location:', function (dataTable) {
@@ -29,8 +30,13 @@ Then("{word}'s level should be {int}", function (name, level) {
 
 
 When('{word} attacks {word} with {int} damage', function (subject,target,damage) {
-  characters[subject].attack({ target: characters[target], damage });
+  performAttack(subject,target,damage)
 });
+
+function performAttack(subject,target,damage) {
+  characters[subject].attack({ target: characters[target], damage });
+
+}
 
 When('{word} heals themself {int}', function (subject,heal) {
   characters[subject].heal({ heal });
@@ -54,4 +60,20 @@ Then('{word} should be dead', function (name) {
 
 Then('{word} should be alive', function (name) {
   expect(characters[name].isAlive).to.be.true
+});
+
+When('{word} attempts to attack {word}', function (subject,target) {
+  attackCommand = () => {
+    performAttack(subject,target, 5)
+  }
+});
+
+Then('the attack should fail', function () {
+  try {
+    attackCommand()
+    expect.fail("Error expected")
+  }catch (err)
+  {
+    expect(err.message).to.contain("Character out of range")
+  }
 });
