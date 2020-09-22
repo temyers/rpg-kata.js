@@ -59,4 +59,10 @@ Scenario: Heal an ally
   But Bill has 10 health
   When Ben heals Bill 10
   Then Bill's health should be 20
+
+Scenario: Cannot heal an enemy
+  Given Bill and Ben are enemies
+  But Bill has 10 health
+  When Ben heals Bill 10
+  Then Bill's health should be 10
   

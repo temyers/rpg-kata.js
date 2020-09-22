@@ -44,6 +44,15 @@ Given('{word} and {word} are allies', function (subject,target) {
   joinFaction(this,target,faction)
 });
 
+Given('{word} and {word} are enemies', function (subject,target) {
+  joinFaction(this,subject,"ATeam")
+  joinFaction(this,target,"BTeam")
+  
+  const c1 = this.characters[subject]
+  const c2 = this.characters[target]
+  expect(c1.isAlly(c2)).to.be.false
+});
+
 Then('{word} and {word} should be allies', function (subject,target) {
   const c1 = this.characters[subject]
   const c2 = this.characters[target]
