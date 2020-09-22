@@ -6,7 +6,8 @@ const { fail } = require("assert");
 
 Given('the following characters exist:', function (dataTable) {
   dataTable.hashes().forEach(row => {
-    this.characters[row.name] = character(row.class)
+    const charClass = row.class || "melee"
+    this.characters[row.name] = character(charClass)
   })
 });
 
