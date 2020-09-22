@@ -3,8 +3,6 @@ const { Before, Given, When, Then } = require("cucumber");
 const { character } = require("../../lib/Character");
 const { expect } = require("chai");
 
-var myCharacter;
-
 var characters = {};
 
 Given("characters Bill, Ben have been created", function () {
@@ -20,8 +18,8 @@ When('{word} attacks {word} with {int} damage', function (subject,target,damage)
   characters[subject].attack({ target: characters[target], damage });
 });
 
-When('{word} heals {word} {int}', function (subject,target,heal) {
-  characters[subject].heal({ target: characters[target], heal });
+When('{word} heals themself {int}', function (subject,heal) {
+  characters[subject].heal({ heal });
 });
 
 Then("{word}'s health should be {int}", function (name,health) {
