@@ -2,12 +2,21 @@ const assert = require("assert");
 const { Before, Given, When, Then } = require("cucumber");
 const { character } = require("../../lib/Character");
 const { expect } = require("chai");
+const { coordinate } = require("../../lib/Coordinate");
 
 var characters = {};
 
-Given("characters Bill, Ben have been created", function () {
+Given("characters Bill, Ben, Max, Paddy have been created", function () {
   characters.Bill = character();
   characters.Ben = character();
+  characters.Max = character();
+  characters.Paddy = character();
+});
+
+Given('the characters are at location:', function (dataTable) {
+  dataTable.hashes().forEach(row => {
+    characters[row.name].location=coordinate(Number(row.x), Number(row.y))
+  })
 });
 
 Given('{word} is level {int}', function (name,level) {

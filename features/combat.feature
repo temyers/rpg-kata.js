@@ -13,13 +13,23 @@ Feature: Combat
       - Healing cannot raise health above 1000
       - A Character can only Heal itself.
     - A Character cannot Deal Damage to itself.
-    -. When dealing damage:
+    - When dealing damage:
       - If the target is 5 or more Levels above the attacker, Damage is reduced by 50%
       - If the target is 5 or more levels below the attacker, Damage is increased by 50%
+    - Characters have an attack Max Range.
+      - *Melee* fighters have a range of 2 meters.
+
 
 
 Background: Characters exist
-  Given characters Bill, Ben have been created
+  Given characters Bill, Ben, Max, Paddy have been created
+  And the characters are at location:
+   | name  | x | y  |
+   | Bill  | 0 | 0  |
+   | Ben   | 0 | 2  |
+   | Max   | 0 | 20 |
+   | Paddy | 0 | 50 |
+  
 
 Scenario: Create a character
   Then Bill's health should be 1000
