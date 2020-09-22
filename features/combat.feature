@@ -18,6 +18,7 @@ Feature: Combat
       - If the target is 5 or more levels below the attacker, Damage is increased by 50%
     - Characters have an attack Max Range.
       - *Melee* fighters have a range of 2 meters.
+      - *Ranged* fighters have a range of 20 meters.
 
 
 
@@ -85,3 +86,12 @@ Scenario: Attack weaker level character
 Scenario: Cannot attack character too far away
   When Bill attempts to attack Max
   Then the attack should fail
+
+Scenario Outline: Cannot attack character too far away - <why>
+  When <subject> attempts to attack <target>
+  Then the attack should fail
+
+  Examples:
+  | subject | target | why    |
+  | Bill    | Max    | melee  |
+  | Max     | Paddy  | ranged |
