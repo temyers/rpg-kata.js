@@ -11,6 +11,7 @@ Feature: Combat
     - A Character can Heal a Character.
       - Dead characters cannot be healed
       - Healing cannot raise health above 1000
+    - A Character cannot Deal Damage to itself.
 
 Scenario: Create a character
   When I create a character
@@ -50,3 +51,8 @@ Scenario: Heal character to full health
   When Bill heals Ben 50
   Then Ben should be alive
   And Ben's health should be 1000
+
+Scenario: Self harm
+  Given characters Bill, Ben have been created
+  When Bill attacks Bill with damage 5
+  Then Bill's health should be 1000

@@ -32,12 +32,20 @@ When("Bill attacks Ben with {int} damage", function (damage) {
   characters.Bill.attack({ target: characters.Ben, damage });
 });
 
+When('Bill attacks Bill with damage {int}', function (damage) {
+  characters.Bill.attack({ target: characters.Bill, damage });
+});
+
 When('Bill heals Ben {int}', function (heal) {
   characters.Bill.heal({ target: characters.Ben, heal });
 });
 
 Then("Ben's health should be {int}", function (health) {
   expect(characters.Ben.health).to.equal(health)
+});
+
+Then('Bill\'s health should be {int}', function (health) {
+  expect(characters.Bill.health).to.equal(health)
 });
 
 Given('Ben has {int} health', function (health) {
