@@ -8,6 +8,8 @@ Feature: Combat
     - Characters can Deal Damage to Characters.
       - Damage is subtracted from Health
       - When damage received exceeds current Health, Health becomes 0 and the character dies
+    - A Character can Heal a Character.
+      - Dead characters cannot be healed
 
 Scenario: Create a character
   When I create a character
@@ -25,4 +27,11 @@ Scenario: Kill a character
   But Ben has 10 health
   When Bill attacks Ben with 20 damage
   Then Ben's health should be 0
-  And Ben should die
+  And Ben should be dead
+
+Scenario: Attempt resurrection
+  Given characters Bill, Ben have been created
+  But Ben has died
+  When Bill heals Ben 5
+  Then Ben should be dead
+  And Ben's health should be 0
