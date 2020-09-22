@@ -35,3 +35,11 @@ When("Bill attacks Ben with {int} damage", function (damage) {
 Then("Ben's health should be {int}", function (health) {
   expect(characters.Ben.health).to.equal(health)
 });
+
+Given('Ben has {int} health', function (health) {
+  characters.Ben.health = health
+});
+
+Then('Ben should die', function () {
+  expect(characters.Ben.isAlive).to.be.false
+});
