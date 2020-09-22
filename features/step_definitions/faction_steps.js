@@ -36,3 +36,16 @@ function shouldBelongToFactions(name, expected) {
   const myFactions = this.characters[name].factions();
   expect(myFactions).to.have.length(expected);
 }
+
+Given('{word} and {word} are allies', function (subject,target) {
+  const faction = "Blood Brothers"
+
+  joinFaction(this,subject,faction)
+  joinFaction(this,target,faction)
+});
+
+Then('{word} and {word} should be allies', function (subject,target) {
+  const c1 = this.characters[subject]
+  const c2 = this.characters[target]
+  expect(c1.isAlly(c2)).to.be.true
+});

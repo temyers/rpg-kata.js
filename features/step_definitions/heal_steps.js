@@ -4,6 +4,12 @@ const { expect } = require("chai");
 const { coordinate } = require("../../lib/Coordinate");
 const { fail } = require("assert");
 
-When('{word} heals themself {int}', function (subject,heal) {
-  this.characters[subject].heal({ heal });
+When("{word} heals {word} {int}", function (subject, recipient, heal) {
+  if ("themself" === recipient) {
+    this.characters[subject].heal({ heal });
+  } else {
+    const target = this.characters[recipient]
+    this.characters[subject].heal({ target, heal });
+  }
 });
+
