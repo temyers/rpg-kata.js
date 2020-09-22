@@ -58,7 +58,12 @@ Scenario: Self harm
   When Bill attacks Bill with 5 damage
   Then Bill's health should be 1000
 
-Scenario: Attack higher level character
+Scenario: Attack stronger level character
   Given Ben is level 6
   When Bill attacks Ben with 20 damage
   Then Ben's health should be 990
+
+Scenario: Attack weaker level character
+  Given Ben is level 6
+  When Ben attacks Bill with 20 damage
+  Then Bill's health should be 970
