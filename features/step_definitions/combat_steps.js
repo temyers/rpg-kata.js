@@ -16,3 +16,7 @@ Then('the characters health should be {int}', function (health) {
 Then('the characters level should be {int}', function (level) {
   expect(myCharacter.level).to.equal(level)
 });
+
+Then('the character should be alive', function () {
+  expect(myCharacter.isAlive).to.equal(true)
+});
