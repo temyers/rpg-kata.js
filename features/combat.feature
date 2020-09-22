@@ -43,3 +43,10 @@ Scenario: Heal a character
   When Bill heals Ben 10
   Then Ben should be alive
   And Ben's health should be 20
+
+Scenario: Heal character to full health
+  Given characters Bill, Ben have been created
+  But Ben has 990 health
+  When Bill heals Ben 50
+  Then Ben should be alive
+  And Ben's health should be 1000
