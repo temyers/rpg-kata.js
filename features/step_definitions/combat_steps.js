@@ -1,83 +1,36 @@
-const assert = require("assert");
 const { Before, Given, When, Then } = require("cucumber");
 const { character } = require("../../lib/Character");
 const { expect } = require("chai");
 const { coordinate } = require("../../lib/Coordinate");
 const { fail } = require("assert");
 
-var characters = {};
-var attackCommand;
-
-Given('the following characters exist:', function (dataTable) {
-  dataTable.hashes().forEach(row => {
-    characters[row.name] = character(row.class)
-  })
-});
-
-Given('the characters are at location:', function (dataTable) {
-  dataTable.hashes().forEach(row => {
-    characters[row.name].location(Number(row.x), Number(row.y))
-  })
-});
-
-Given('{word} is level {int}', function (name,level) {
-  characters[name].level = Number(level)
-});
-
-Then("{word}'s level should be {int}", function (name, level) {
-  expect(characters[name].level).to.equal(level);
-});
-
-
-When('{word} attacks {word} with {int} damage', function (subject,target,damage) {
-  performAttack(subject,target,damage)
-});
+When('{word} attacks {word} with {int} damage', performAttack);
 
 function performAttack(subject,target,damage) {
-  characters[subject].attack({ target: characters[target], damage });
+  this.characters[subject].attack({ target: this.characters[target], damage });
 
 }
-
-When('{word} heals themself {int}', function (subject,heal) {
-  characters[subject].heal({ heal });
-});
 
 Then("{word}'s health should be {int}", thenCharactersHealthShouldBe);
 Then("{word} health should be {int}", thenCharactersHealthShouldBe);
 
 function thenCharactersHealthShouldBe(name,health){
-  expect(characters[name].health).to.equal(health)
+  expect(this.characters[name].health).to.equal(health)
 
 }
 
 Given('{word} has {int} health', function (name,health) {
-  characters[name].health = health
+  this.characters[name].health = health
 });
 
 Given('{word} has died', function (name) {
-  characters[name].kill()
+  this.characters[name].kill()
 });
 
 Then('{word} should be dead', function (name) {
-  expect(characters[name].isAlive).to.be.false
+  expect(this.characters[name].isAlive).to.be.false
 });
 
 Then('{word} should be alive', function (name) {
-  expect(characters[name].isAlive).to.be.true
-});
-
-When('{word} attempts to attack {word}', function (subject,target) {
-  attackCommand = () => {
-    performAttack(subject,target, 5)
-  }
-});
-
-Then('the attack should fail', function () {
-  try {
-    attackCommand()
-    expect.fail("Error expected")
-  }catch (err)
-  {
-    expect(err.message).to.contain("Character out of range")
-  }
+  expect(this.characters[name].isAlive).to.be.true
 });
