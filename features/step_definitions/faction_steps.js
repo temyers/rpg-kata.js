@@ -7,13 +7,21 @@ Then("{word} should belong to no faction", function (name) {
   expect(myFactions).to.be.empty;
 });
 
+Given('{word} is a member of faction {string}', function (name,faction) {
+  joinFaction(this,name,faction)
+});
 When("{word} joins faction {string}", function(name,faction){
   joinFaction(this,name,faction)
+});
+
+When('{word} leaves faction {string}', function (name,faction) {
+  this.characters[name].leaveFaction(faction);
 });
 
 function joinFaction(world, name, faction) {
   world.characters[name].joinFaction(faction);
 }
+
 
 When("{word} joins Factions", function (name, dataTable) {
   dataTable.hashes().forEach((row) => {

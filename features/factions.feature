@@ -26,3 +26,12 @@ Scenario: Join many factions
     | Foo     |
     | Bar     |
   Then Bill should belong to 2 factions
+
+Scenario: Leave a faction
+  Given Bill is a member of faction "Foo"
+  When Bill leaves faction "Foo"
+  Then Bill should belong to 0 factions
+
+Scenario: Leave a faction not a member of
+  When Bill leaves faction "non existant"
+  Then Bill should belong to 0 factions
