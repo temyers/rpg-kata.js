@@ -1,0 +1,39 @@
+{
+  "name": "rpg-kata",
+  "version": "1.0.0",
+  "description": "rpg-kata exercise in JavaScript",
+  "main": "index.js",
+  "watch": {
+    "mocha": "{lib,test}/**/*.js",
+    "cucumber": {
+      "patterns": [
+        "lib",
+        "features"
+      ],
+      "extensions": "js,feature"
+    }
+  },
+  "scripts": {
+    "mocha": "mocha",
+    "cucumber": "cucumber-js",
+    "test": "npm-run-all --silent -c mocha cucumber",
+    "watch": "npm-watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:temyers/rpg-kata.js.git"
+  },
+  "keywords": [
+    "kata",
+    "bdd",
+    "cucumber"
+  ],
+  "author": "Mechanical Rock",
+  "homepage": "https://github.com/temyers/rpg-kata.js",
+  "devDependencies": {
+    "cucumber": "^3.1.0",
+    "mocha": "^4.0.1",
+    "npm-run-all": "^4.1.2",
+    "npm-watch": "^0.3.0"
+  }
+}
