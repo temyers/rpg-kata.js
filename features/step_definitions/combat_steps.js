@@ -15,7 +15,7 @@ Given("characters Bill, Ben, Max, Paddy have been created", function () {
 
 Given('the characters are at location:', function (dataTable) {
   dataTable.hashes().forEach(row => {
-    characters[row.name].location=coordinate(Number(row.x), Number(row.y))
+    characters[row.name].location(Number(row.x), Number(row.y))
   })
 });
 
