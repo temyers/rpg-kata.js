@@ -14,7 +14,7 @@
     "strict": true
   },
   "include": [
-    "./**/*.ts", "features/support/world.js", "features/support/world.js"
+    "./**/*.ts", "features/support/world.js", "features/support/world.js", "features/support/hooks.js"
   ],
   "exclude": [
     "node_modules/**/*",

@@ -14,11 +14,11 @@
     }
   },
   "scripts": {
-    "mocha": "mocha",
-    "cucumber": "cucumber-js",
+    "test:unit": "mocha -r ts-node/register test/**/*.test.ts",
+    "test:accept": "cucumber-js",
     "test": "npm-run-all --silent -c test:standard test:eventSourcing",
-    "test:standard": "npm-run-all --silent -c mocha cucumber",
-    "test:eventSourcing": "FF_EVENTSOURCE=true npm-run-all --silent -c mocha cucumber",
+    "test:standard": "npm-run-all --silent -c test:unit test:accept",
+    "test:eventSourcing": "FF_EVENTSOURCE=true npm-run-all --silent -c test:unit test:accept",
     "test:coverage": "nyc npm-run-all --silent -c mocha cucumber",
     "watch": "npm-watch"
   },
@@ -38,6 +38,7 @@
     "@types/cucumber": "^6.0.1",
     "@types/mocha": "^8.0.3",
     "@types/node": "^14.11.2",
+    "@types/sinon": "^9.0.5",
     "chai": "^4.2.0",
     "cucumber": "^6.0.5",
     "cucumber-pretty": "^6.0.0",
@@ -45,8 +46,27 @@
     "npm-run-all": "^4.1.5",
     "npm-watch": "^0.7.0",
     "nyc": "^15.1.0",
+    "sinon": "^9.0.3",
+    "sinon-chai": "^3.5.0",
+    "source-map-support": "^0.5.19",
     "ts-node": "^9.0.0",
     "typescript": "^4.0.3"
   },
-  "dependencies": {}
+  "dependencies": {
+    "cloudevents": "^3.2.0"
+  },
+  "nyc": {
+    "extension": [
+      ".js",
+      ".ts",
+      ".tsx"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
+    "exclude": [
+      "**/*.d.ts"
+    ],
+    "all": true
+  }
 }
