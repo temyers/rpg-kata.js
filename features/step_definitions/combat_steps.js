@@ -12,7 +12,6 @@ function performAttack(subject,target,damage) {
 }
 
 Then("{word}'s health should be {int}", thenCharactersHealthShouldBe);
-// Then("{word} health should be {int}", thenCharactersHealthShouldBe);
 
 function thenCharactersHealthShouldBe(name,health){
   expect(this.characters[name].health).to.equal(health)

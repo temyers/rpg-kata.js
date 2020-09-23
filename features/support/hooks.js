@@ -1,5 +1,5 @@
 var { eventSourceClient, standardClient } = require('../../lib/client')
-var {BeforeAll} = require('cucumber');
+var {Before} = require('cucumber');
 
 // export interface MyWorld {
 //   characters: {
@@ -9,8 +9,7 @@ var {BeforeAll} = require('cucumber');
 // }
 
 
-BeforeAll(function () {
-  console.log("before all")
+Before(function () {
   const eventSource = "true" === process.env.FF_EVENTSOURCE
 
   if(eventSource){

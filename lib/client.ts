@@ -6,12 +6,12 @@ export interface Client {
 }
 
 export function eventSourceClient(): Client {
-  console.log("Using EventSourced client")
+  // console.log("Using EventSourced client")
   return client();
 }
 
 export function standardClient(): Client {
-  console.log("Using Standard client")
+  // console.log("Using Standard client")
   return {
     character
   };
