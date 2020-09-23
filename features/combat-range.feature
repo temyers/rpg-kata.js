@@ -22,12 +22,12 @@ Background: Characters exist
 
 Scenario Outline: Attack a character in range <class>
   When <subject> attacks <target> with 5 damage
-  Then <target> health should be 995
+  Then <targets> health should be 995
 
   Examples:
-  | subject | target | class  |
-  | Bill    | Ben    | melee  |
-  | Max     | Bill   | ranged |
+  | subject | target | targets | class  |
+  | Bill    | Ben    | Ben's   | melee  |
+  | Max     | Bill   | Bill's  | ranged |
 
 Scenario Outline: Cannot attack character too far away - <why>
   When <subject> attacks <target> with 20 damage
