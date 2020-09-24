@@ -14,9 +14,10 @@
     }
   },
   "scripts": {
-    "test:unit": "nyc mocha",
-    "test:accept": "nyc cucumber-js",
+    "test:unit": "mocha",
+    "test:accept": "cucumber-js",
     "test": "npm-run-all --silent -c test:unit test:accept",
+    "test:coverage": "nyc npm-run-all --silent -c test:unit test:accept",
     "watch": "npm-watch"
   },
   "repository": {
