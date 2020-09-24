@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "composite": true,
+    "lib": [
+      "es2017"
+    ],
+    "removeComments": true,
+    "moduleResolution": "node",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "sourceMap": true,
+    "target": "es2016",
+    "outDir": "dist",
+    "strict": true
+  },
+  "include": [
+    "./**/*.ts"
+  ],
+  "exclude": [
+    "node_modules/**/*",
+    ".vscode/**/*",
+  ]
+}
