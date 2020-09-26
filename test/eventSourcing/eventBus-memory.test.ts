@@ -5,6 +5,7 @@ import { CloudEvent } from "cloudevents"
 const { use, expect } = require("chai")
 import * as sinonChai  from "sinon-chai";
 import sinonChaiInOrder from 'sinon-chai-in-order';
+import { createEvent } from "./mockEvent"
 
 use(sinonChai)
 use(sinonChaiInOrder)
@@ -52,15 +53,7 @@ function thenTheObserverShouldReceiveEventsInOrder(observer: sinon.SinonSpy<any[
 }
 
 async function whenAnEventIsPublished(eventBus: EventBus) {
-  const event = new CloudEvent({
-    id: Math.random().toString(),
-    source: "test",
-    specversion: "1.0",
-    type: "example",
-    data: {
-      message: "hello world"
-    }
-  })
+  const event = createEvent()
   await eventBus.publish(event)
   return event
 }

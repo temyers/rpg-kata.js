@@ -1,4 +1,5 @@
 import { CloudEventV1 } from 'cloudevents'
+import { Event } from './event';
 
 export interface Observer {
   onEvent: (event:Event) => Promise<void>
@@ -9,6 +10,4 @@ export interface EventBus {
   publish: (event: Event) => Promise<void>
 }
 
-export interface Event extends CloudEventV1 {
 
-}
