@@ -52,11 +52,21 @@
     "sinon-chai": "^3.5.0",
     "source-map-support": "^0.5.19",
     "ts-node": "^9.0.0",
-    "typescript": "^4.0.3"
+    "typescript": "^4.0.3",
+    "sinon-chai-in-order": "^0.1.0"
   },
+  "dumpingGround": [
+    {
+      "description": "json doesn't support comments, this is a dumping ground for ideas!"
+    },
+    {
+      "mocha-cucumber": "0.0.5",
+      "notes": "conflicts with cucumber-js - would need to commit to conversion."
+    }
+  ],
   "dependencies": {
     "cloudevents": "^3.2.0",
-    "sinon-chai-in-order": "^0.1.0"
+    "ksuid": "^2.0.0"
   },
   "nyc": {
     "extension": [

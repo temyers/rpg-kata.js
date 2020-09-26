@@ -17,12 +17,12 @@ export interface Character {
   location: (x: number, y: number) => void;
 }
 
-interface HealParams {
+export interface HealParams {
   heal: number;
   target?: Character;
 }
 
-interface AttackParams {
+export interface AttackParams {
   target: Character;
   damage: number;
 }
@@ -163,5 +163,3 @@ export function character(characterClass: string): Character {
   };
   return me;
 }
-
-

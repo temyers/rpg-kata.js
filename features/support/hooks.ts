@@ -1,15 +1,9 @@
+import { MyWorld } from "./world";
+
 var { eventSourceClient, standardClient } = require('../../lib/client')
 var {Before} = require('cucumber');
 
-// export interface MyWorld {
-//   characters: {
-//     [key:string]: Character,
-//   },
-//   factory: Client
-// }
-
-
-Before(function () {
+Before(function (this: MyWorld) {
   const eventSource = "true" === process.env.FF_EVENTSOURCE
 
   if(eventSource){
