@@ -13,12 +13,6 @@ import {
 import { AsyncCharacter } from "../client";
 
 export class EventSourceCharacter implements AsyncCharacter, Observer {
-  // public readonly _location?: any;
-  // public readonly health: number = 0;
-  // public readonly level: number = 0;
-  // public readonly isAlive: boolean = false;
-  // public readonly characterClass: string = "";
-  // public readonly _factions: Set<string> = new Set();
   private character: Character;
   private constructor(eventBus: EventBus, characterClass: string) {
     eventBus.register(this);
@@ -75,7 +69,11 @@ export class EventSourceCharacter implements AsyncCharacter, Observer {
   ): Promise<AsyncCharacter> {
     const character = new EventSourceCharacter(eventBus, characterClass);
 
-    eventBus.publish(character.createEvent({ characterClass }));
+    const createCharacterCommand = character.createEvent({ characterClass });
+    eventBus.publish(createCharacterCommand);
+
+    await character.characterCreated(createCharacterCommand.id)
+
     return Promise.resolve(character);
   }
 
@@ -132,7 +130,7 @@ export class EventSourceCharacter implements AsyncCharacter, Observer {
     this.character.location(x, y);
   }
 
-  onEvent(event: Event): Promise<void> {
+  onEvent(_event: Event): Promise<void> {
     return Promise.resolve();
   }
 
@@ -143,6 +141,10 @@ export class EventSourceCharacter implements AsyncCharacter, Observer {
     };
 
     return baseEvent(props);
+  }
+
+  private async characterCreated(_id: string){
+    Promise.resolve()
   }
 }
 interface CharacterRequestData {

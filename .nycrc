@@ -1,4 +1,7 @@
 {
   "extends": "@istanbuljs/nyc-config-typescript",
+  "require": [
+    "ts-node/register/transpile-only"
+  ],
   "all": true
 }

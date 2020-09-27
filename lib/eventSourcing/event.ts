@@ -1,5 +1,5 @@
 import { CloudEventV1, CloudEvent } from "cloudevents";
-import { randomSync } from 'ksuid'
+const ksuid = require('ksuid')
 export interface Event extends CloudEventV1 {
 
 }
@@ -26,7 +26,7 @@ export interface EventProps {
 export function createEvent(payload: EventProps): Event {
   const {type,source, data} = payload
   return new CloudEvent({
-    id: randomSync().string,
+    id: ksuid.randomSync().string,
     type,
     source,
     specversion: '1.0',

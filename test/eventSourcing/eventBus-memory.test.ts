@@ -1,11 +1,15 @@
 import { EventBus, Observer } from "../../lib/eventSourcing/eventBus"
 import { InMemoryEventBus } from "../../lib/eventSourcing/eventBus-memory"
 import * as sinon from "sinon"
-import { CloudEvent } from "cloudevents"
 const { use, expect } = require("chai")
-import * as sinonChai  from "sinon-chai";
+const sinonChai = require("sinon-chai");
+// import sinonChaiInOrder from 'sinon-chai-in-order';
+// TODO - requires typings
+// const sinonChaiInOrder = require('sinon-chai-in-order')
 import sinonChaiInOrder from 'sinon-chai-in-order';
+
 import { createEvent } from "./mockEvent"
+import { Event } from "../../lib/eventSourcing/event"
 
 use(sinonChai)
 use(sinonChaiInOrder)
@@ -46,7 +50,7 @@ describe("InMemoryEventBus", () => {
   })
 })
 
-function thenTheObserverShouldReceiveEventsInOrder(observer: sinon.SinonSpy<any[], any>, ...events: CloudEvent[]){
+function thenTheObserverShouldReceiveEventsInOrder(observer: sinon.SinonSpy<any[], any>, ...events: Event[]){
 
   const observations = expect(observer).inOrder.to.have.been.calledWith(events[0])
   events.slice(1).map(e => observations.subsequently.calledWith(e))

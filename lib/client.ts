@@ -37,23 +37,29 @@ class AsyncCharacterDelegate implements AsyncCharacter{
     this.isAlive = isAlive
     this.characterClass = characterClass
   }
-
+  
   get _factions(): Set<string>{
     return this.character._factions
   }
-
+  
   get _location(): any {
     return this.character._location
   }
   
-
-  async joinFaction (name: string) : Promise<void>{
+  
+  joinFaction(name: string):void{
     this.character.joinFaction(name)
+  };
+  async joinFactionAsync(name: string) : Promise<void>{
+    this.joinFaction(name)
     Promise.resolve()
   };
   
-  async leaveFaction (name: string) : Promise<void>{
+  leaveFaction(name: string): void{
     this.character.leaveFaction(name)
+  };
+  async leaveFactionAsync(name: string) : Promise<void>{
+    this.leaveFaction(name)
     Promise.resolve()
   };
   
@@ -64,23 +70,36 @@ class AsyncCharacterDelegate implements AsyncCharacter{
   factions () : Set<string>{
     return this.character.factions()
   };
-  async attack (params: AttackParams) : Promise<void>{
+  attack(params: AttackParams): void{
     this.character.attack(params)
+  };
+  async attackAsync(params: AttackParams) : Promise<void>{
+    this.attack(params)
     Promise.resolve()
     
   };
-  async kill () : Promise<void>{
+  kill(): void{
     this.character.kill()
+  };
+  async killAsync() : Promise<void>{
+    this.kill()
     Promise.resolve()
   };
   
-  async heal (params: HealParams) : Promise<void>{
+  heal(params: HealParams):void{
     this.character.heal(params)
+  };
+  async healAsync(params: HealParams) : Promise<void>{
+    this.heal(params)
     Promise.resolve()  
   };
   
-  async location (x: number, y: number) : Promise<void>{
+  location(x: number, y: number): void{
     this.character._location(x,y)
+  };
+
+  async locationAsync(x: number, y: number) : Promise<void>{
+    this.location(x,y)
     Promise.resolve()  
   };
 

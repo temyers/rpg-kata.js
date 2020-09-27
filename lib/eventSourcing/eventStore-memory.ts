@@ -1,6 +1,5 @@
 import { EventStore } from "./eventStore";
-import { Event } from "./eventBus";
-import { byAggregate } from "./event";
+import { byAggregate, Event } from "./event";
 
 export class InMemoryEventStore implements EventStore {
   private events:Event[]=[]
@@ -15,8 +14,8 @@ export class InMemoryEventStore implements EventStore {
     return Promise.resolve(result);
   }
   getAllByAggregateFromPoint(
-    aggregate: string,
-    sortKey: string
+    _aggregate: string,
+    _sortKey: string
   ): Promise<IterableIterator<Event>> {
     const events: Event[] = [];
     return Promise.resolve(events.values());

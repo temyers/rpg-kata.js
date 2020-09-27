@@ -1,4 +1,5 @@
-import { EventBus, Event, Observer } from "./eventBus";
+import { EventBus, Observer } from "./eventBus";
+import { Event } from "./event";
 
 export class InMemoryEventBus implements EventBus {
   private observers: Observer[]

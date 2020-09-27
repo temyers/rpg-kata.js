@@ -1,7 +1,6 @@
 import { MyWorld } from "../support/world";
 
-const { Before, Given, When, Then } = require("cucumber");
-const { character } = require("../../lib/Character");
+const { Given, When, Then } = require("cucumber");
 const { expect } = require("chai");
 
 Then("{word} should belong to no faction", function (

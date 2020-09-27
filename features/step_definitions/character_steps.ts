@@ -1,10 +1,7 @@
 import { MyWorld } from "../support/world";
 
-const { Before, Given, When, Then } = require("cucumber");
-const { character } = require("../../lib/Character");
+const { Given, Then } = require("cucumber");
 const { expect } = require("chai");
-const { coordinate } = require("../../lib/Coordinate");
-const { fail } = require("assert");
 
 Given("the following characters exist:", async function (
   this: MyWorld,

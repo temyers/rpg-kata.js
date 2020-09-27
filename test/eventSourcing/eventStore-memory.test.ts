@@ -1,9 +1,9 @@
 import { InMemoryEventStore } from "../../lib/eventSourcing/eventStore-memory"
 import { EventStore } from "../../lib/eventSourcing/eventStore"
-import {expect, use} from 'chai'
+// import {expect, use} from 'chai'
+const { use, expect } = require("chai")
 var chaiIterator = require( 'chai-iterator')
 import { createEvents, createEvent } from "./mockEvent"
-import { parserByEncoding } from "cloudevents/dist/parsers"
 import { Event, byAggregate } from "../../lib/eventSourcing/event"
 use(chaiIterator)
 

@@ -19,7 +19,7 @@
     "test": "npm-run-all --silent -c test:standard test:eventSourcing",
     "test:standard": "npm-run-all --silent -c test:unit test:accept",
     "test:eventSourcing": "FF_EVENTSOURCE=true npm-run-all --silent -c test:unit test:accept",
-    "test:coverage": "nyc npm-run-all --silent -c mocha cucumber",
+    "test:coverage": "nyc npm-run-all --silent -c test:unit test:accept",
     "watch": "npm-watch"
   },
   "repository": {
@@ -34,6 +34,7 @@
   "author": "Mechanical Rock",
   "homepage": "https://github.com/temyers/rpg-kata.js",
   "devDependencies": {
+    "@istanbuljs/nyc-config-typescript": "^1.0.1",
     "@types/chai": "^4.2.12",
     "@types/cucumber": "^6.0.1",
     "@types/mocha": "^8.0.3",
@@ -50,10 +51,10 @@
     "nyc": "^15.1.0",
     "sinon": "^9.0.3",
     "sinon-chai": "^3.5.0",
+    "sinon-chai-in-order": "^0.1.0",
     "source-map-support": "^0.5.19",
     "ts-node": "^9.0.0",
-    "typescript": "^4.0.3",
-    "sinon-chai-in-order": "^0.1.0"
+    "typescript": "^4.0.3"
   },
   "dumpingGround": [
     {

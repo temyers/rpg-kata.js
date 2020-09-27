@@ -1,4 +1,4 @@
-import { Event } from "./eventBus";
+import { Event } from "./event";
 
 export interface EventStore {
   /**
