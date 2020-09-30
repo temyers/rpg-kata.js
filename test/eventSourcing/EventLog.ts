@@ -12,7 +12,7 @@ export class EventLog implements Observer {
 
   async waitFor(
     event: Partial<Event>,
-    timeoutMs: number = 100
+    timeoutMs: number = 10
   ): Promise<void> {
 
     await sleep(timeoutMs)
