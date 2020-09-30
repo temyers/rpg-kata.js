@@ -24,12 +24,9 @@ export interface EventProps {
 }
 
 export function createEvent(payload: EventProps): Event {
-  const {type,source, data} = payload
   return new CloudEvent({
     id: ksuid.randomSync().string,
-    type,
-    source,
     specversion: '1.0',
-    data
+    ...payload
   })
 }
