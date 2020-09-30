@@ -42,12 +42,12 @@ describe("EventLog", function () {
         await expect(asyncWait).to.eventually.be.rejected;
       });
       
-      it("should timeout in 1 second by default", async function () {
+      it("should timeout in 500ms second by default", async function () {
         const asyncWait = (this.eventLog as EventLog).waitFor({
           type: expectedEventType,
         });
         
-        await sleep(1000);
+        await sleep(500);
         this.eventLog.onEvent(
           createEvent({
             type: expectedEventType,
