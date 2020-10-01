@@ -1,11 +1,9 @@
 import { EventLog, sleep } from "./EventLog";
-const { use, expect } = require("chai");
-var chaiAsPromised = require("chai-as-promised");
+const { expect } = require("chai");
 import { EventBus } from "../../lib/eventSourcing/eventBus";
 import { InMemoryEventBus } from "../../lib/eventSourcing/eventBus-memory";
 import { createEvent } from "../../lib/eventSourcing/event";
 
-use(chaiAsPromised);
 
 const bus: EventBus = new InMemoryEventBus();
 const expectedEventType = "EventLog#waitFor";
@@ -37,6 +35,32 @@ describe("EventLog", function () {
           type: expectedEventType,
         },
         10
+        );
+        
+        await expect(asyncWait).to.eventually.be.rejected;
+      });
+
+    it("should fail if only non-matching events are received", async function () {
+      const asyncWait = (this.eventLog as EventLog).waitFor(
+        {
+          type: expectedEventType,
+        },
+        10
+        );
+
+        this.eventLog.onEvent(
+          createEvent({
+            type: "aDifferentEvent",
+            data: {},
+            source: "EventLog.test.ts",
+          })
+        );
+        this.eventLog.onEvent(
+          createEvent({
+            type: "alsoDifferentEvent",
+            data: {},
+            source: "EventLog.test.ts",
+          })
         );
         
         await expect(asyncWait).to.eventually.be.rejected;

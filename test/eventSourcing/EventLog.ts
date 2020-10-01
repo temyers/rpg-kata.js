@@ -18,12 +18,9 @@ export class EventLog implements Observer {
     await sleep(timeoutMs)
 
     const partialEvent = (e:Event) => {
-      for( const key in Object.keys(event)){
-        if (event[key] !== e.key){
-          return false
-        }
-      }
-      return true
+      const nonMatchingKey = Object.keys(event).find(key => event[key] !== e[key])
+      const matchingEvent = nonMatchingKey === undefined
+      return matchingEvent
     }
     const found = this.recordedEvents.find(partialEvent)
 
@@ -33,4 +30,8 @@ export class EventLog implements Observer {
 }
 export async function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+export function givenAnEventLog(bus:EventBus): EventLog {
+  return new EventLog(bus)
 }

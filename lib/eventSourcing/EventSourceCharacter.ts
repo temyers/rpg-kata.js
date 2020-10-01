@@ -4,6 +4,7 @@ import {
   AttackParams,
   HealParams,
   character as tempCharacter,
+  CharacterClass
 } from "../Character";
 import { Event } from "./event";
 import {
@@ -14,7 +15,7 @@ import { AsyncCharacter } from "../client";
 
 export class EventSourceCharacter implements AsyncCharacter, Observer {
   private character: Character;
-  private constructor(eventBus: EventBus, characterClass: string) {
+  private constructor(eventBus: EventBus, characterClass: CharacterClass) {
     eventBus.register(this);
     this.character = tempCharacter(characterClass);
   }
@@ -58,14 +59,17 @@ export class EventSourceCharacter implements AsyncCharacter, Observer {
 
   // END_TEMPORARY - for backward compatability whilst implementing event sourcing
   public static builderSync(
-    eventBus:EventBus, characterClass:string
+    eventBus:EventBus, characterClass: string
   ): Character{
+    if("melee" !== characterClass && "ranged" !== characterClass){
+      throw new Error("illegal character class")
+    }
     const character = new EventSourceCharacter(eventBus, characterClass);
     return character
   }
   public static async builder(
     eventBus: EventBus,
-    characterClass: string
+    characterClass: CharacterClass
   ): Promise<AsyncCharacter> {
     const character = new EventSourceCharacter(eventBus, characterClass);
 

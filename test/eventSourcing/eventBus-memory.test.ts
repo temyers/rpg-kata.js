@@ -1,18 +1,11 @@
 import { EventBus, Observer } from "../../lib/eventSourcing/eventBus"
 import { InMemoryEventBus } from "../../lib/eventSourcing/eventBus-memory"
 import * as sinon from "sinon"
-const { use, expect } = require("chai")
-const sinonChai = require("sinon-chai");
-// import sinonChaiInOrder from 'sinon-chai-in-order';
-// TODO - requires typings
-// const sinonChaiInOrder = require('sinon-chai-in-order')
-import sinonChaiInOrder from 'sinon-chai-in-order';
+const { expect } = require("chai")
 
 import { createEvent } from "./mockEvent"
 import { Event } from "../../lib/eventSourcing/event"
 
-use(sinonChai)
-use(sinonChaiInOrder)
 
 
 describe("InMemoryEventBus", () => {

@@ -1,8 +1,9 @@
-import {character, Character, AttackParams, HealParams} from './Character'
+import {character, Character, AttackParams, HealParams, CharacterClass} from './Character'
 import { eventSourceClient as client } from './eventSourcing/rpgEventSourceClient'
+
 export interface Client {
   character: (charClass: string) => Character
-  characterAsync: (charClass: string) => Promise<AsyncCharacter>
+  characterAsync: (charClass: CharacterClass) => Promise<AsyncCharacter>
 
 }
 

@@ -1,5 +1,7 @@
 const { coordinate } = require("./Coordinate");
 
+export type CharacterClass = "melee" | "ranged"
+
 export interface Character {
   _location?: any;
   health: number;

@@ -1,11 +1,8 @@
 import { InMemoryEventStore } from "../../lib/eventSourcing/eventStore-memory"
 import { EventStore } from "../../lib/eventSourcing/eventStore"
-// import {expect, use} from 'chai'
-const { use, expect } = require("chai")
-var chaiIterator = require( 'chai-iterator')
+const { expect } = require("chai")
 import { createEvents, createEvent } from "./mockEvent"
 import { Event, byAggregate } from "../../lib/eventSourcing/event"
-use(chaiIterator)
 
 type EventStoreFactory = () => EventStore
 

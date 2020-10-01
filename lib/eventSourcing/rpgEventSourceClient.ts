@@ -3,6 +3,7 @@ import { EventBus } from "./eventBus";
 import { InMemoryEventBus } from "./eventBus-memory";
 import { EventProps, Event, createEvent as baseEvent } from "./event";
 import { EventSourceCharacter } from "./EventSourceCharacter";
+import { CharacterClass } from "../Character";
 export function eventSourceClient(): Client {
   const eventBus: EventBus = new InMemoryEventBus();
   return {
@@ -12,7 +13,7 @@ export function eventSourceClient(): Client {
       );
       return EventSourceCharacter.builderSync(eventBus, charClass);
     },
-    characterAsync: async (charClass: string) => {
+    characterAsync: async (charClass: CharacterClass) => {
       const character = await EventSourceCharacter.builder(eventBus, charClass);
       return character;
     },
