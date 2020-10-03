@@ -9,7 +9,7 @@ Given("the following characters exist:", async function (
 ) {
   for (const row of dataTable.hashes()) {
     const charClass = row.class || "melee";
-    this.characters[row.name] = this.factory.character(charClass);
+    this.characters[row.name] = await this.factory.characterAsync(charClass);
   }
 });
 

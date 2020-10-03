@@ -12,13 +12,12 @@ import {
   createEvent as baseEvent,
 } from "./rpgEventSourceClient";
 import { AsyncCharacter } from "../client";
-import { InMemoryEventBus } from "./eventBus-memory";
 import { WaitObserver } from "../../test/eventSourcing/WaitObserver";
 
 export class EventSourceCharacter implements AsyncCharacter, Observer {
   private character: Character;
   private waiters:WaitObserver[]  = []
-  private constructor(private eventBus: EventBus, characterClass: CharacterClass) {
+  private constructor(eventBus: EventBus, characterClass: CharacterClass) {
     eventBus.register(this);
     this.character = tempCharacter(characterClass);
   }
@@ -75,12 +74,17 @@ export class EventSourceCharacter implements AsyncCharacter, Observer {
     characterClass: CharacterClass
   ): Promise<AsyncCharacter> {
     const character = new EventSourceCharacter(eventBus, characterClass);
-
+    
     const createCharacterCommand = character.createEvent({ characterClass });
+    // Start the wait process before publishing the create request to avoid race conditions
+    const characterCreatedEvent = character.characterCreated(createCharacterCommand.id)
     eventBus.publish(createCharacterCommand);
-
-    await character.characterCreated(createCharacterCommand.id)
-
+    console.log("Published CreateCharacterRequest")
+    
+    await characterCreatedEvent
+    console.log("Received CharacterCreatedEvent response")
+    
+    console.log("Returning Character")
     return Promise.resolve(character);
   }
 
@@ -160,6 +164,7 @@ export class EventSourceCharacter implements AsyncCharacter, Observer {
       }
     })
     this.waiters.push(waiter)
+    console.log("Waiting for character to be created")
     return waiter.wait()
   }
 

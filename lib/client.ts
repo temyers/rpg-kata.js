@@ -1,4 +1,5 @@
 import {character, Character, AttackParams, HealParams, CharacterClass} from './Character'
+import { EventBus } from './eventSourcing/eventBus';
 import { eventSourceClient as client } from './eventSourcing/rpgEventSourceClient'
 
 export interface Client {
@@ -7,9 +8,9 @@ export interface Client {
 
 }
 
-export function eventSourceClient(): Client {
+export function eventSourceClient(bus: EventBus): Client {
   // console.log("Using EventSourced client")
-  return client();
+  return client(bus);
 }
 
 export function standardClient(): Client {
@@ -107,16 +108,8 @@ class AsyncCharacterDelegate implements AsyncCharacter{
 }
 
 export interface AsyncCharacter extends Character {
-  // _location?: any;
-  // health: number;
-  // level: number;
-  // isAlive: boolean;
-  // characterClass: string;
-  // _factions: Set<string>;
   joinFactionAsync: (name: string) => Promise<void>;
   leaveFactionAsync: (name: string) => Promise<void>;
-  // isAllyAsync: (other: Character) => boolean;
-  // factionsAsync: () => Set<string>;
   attackAsync: (params: AttackParams) => Promise<void>;
   killAsync: () => Promise<void>;
   healAsync: (params: HealParams) => Promise<void>;

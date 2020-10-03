@@ -1,11 +1,9 @@
 import { Client } from "../client";
 import { EventBus } from "./eventBus";
-import { InMemoryEventBus } from "./eventBus-memory";
 import { EventProps, Event, createEvent as baseEvent } from "./event";
 import { EventSourceCharacter } from "./EventSourceCharacter";
 import { CharacterClass } from "../Character";
-export function eventSourceClient(): Client {
-  const eventBus: EventBus = new InMemoryEventBus();
+export function eventSourceClient(eventBus: EventBus): Client {
   return {
     character: (charClass: string) => {
       console.warn(
