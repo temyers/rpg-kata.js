@@ -12,10 +12,13 @@ import {
   createEvent as baseEvent,
 } from "./rpgEventSourceClient";
 import { AsyncCharacter } from "../client";
+import { InMemoryEventBus } from "./eventBus-memory";
+import { WaitObserver } from "../../test/eventSourcing/WaitObserver";
 
 export class EventSourceCharacter implements AsyncCharacter, Observer {
   private character: Character;
-  private constructor(eventBus: EventBus, characterClass: CharacterClass) {
+  private waiters:WaitObserver[]  = []
+  private constructor(private eventBus: EventBus, characterClass: CharacterClass) {
     eventBus.register(this);
     this.character = tempCharacter(characterClass);
   }
@@ -134,7 +137,8 @@ export class EventSourceCharacter implements AsyncCharacter, Observer {
     this.character.location(x, y);
   }
 
-  onEvent(_event: Event): Promise<void> {
+  onEvent(event: Event): Promise<void> {
+    this.waiters.forEach(w => w.onEvent(event))
     return Promise.resolve();
   }
 
@@ -148,8 +152,17 @@ export class EventSourceCharacter implements AsyncCharacter, Observer {
   }
 
   private async characterCreated(_id: string){
-    Promise.resolve()
+    const waiter = new WaitObserver({
+      timeout: 1000,
+      event: {
+        type: "CharacterCreatedEvent"
+      }
+    })
+    this.waiters.push(waiter)
+    return waiter.wait()
   }
+
+
 }
 interface CharacterRequestData {
   characterClass: string;

@@ -23,14 +23,15 @@ export class EventLog implements Observer {
       return matchingEvent
     }
     const found = this.recordedEvents.find(partialEvent)
-
+    
     return found ? Promise.resolve() : Promise.reject()
-
+    
   }
 }
 export async function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
+
 
 export function givenAnEventLog(bus:EventBus): EventLog {
   return new EventLog(bus)
