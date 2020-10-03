@@ -151,11 +151,12 @@ export class EventSourceCharacter implements AsyncCharacter, Observer {
     return baseEvent(props);
   }
 
-  private async characterCreated(_id: string){
+  private async characterCreated(id: string){
     const waiter = new WaitObserver({
       timeout: 1000,
       event: {
-        type: "CharacterCreatedEvent"
+        type: "CharacterCreatedEvent",
+        id
       }
     })
     this.waiters.push(waiter)

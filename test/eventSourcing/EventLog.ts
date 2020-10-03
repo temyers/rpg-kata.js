@@ -13,7 +13,7 @@ export class EventLog implements Observer {
   async waitFor(
     event: Partial<Event>,
     timeoutMs: number = 10
-  ): Promise<void> {
+  ): Promise<Event> {
 
     await sleep(timeoutMs)
 
@@ -24,7 +24,7 @@ export class EventLog implements Observer {
     }
     const found = this.recordedEvents.find(partialEvent)
     
-    return found ? Promise.resolve() : Promise.reject()
+    return found ? Promise.resolve(found) : Promise.reject()
     
   }
 }

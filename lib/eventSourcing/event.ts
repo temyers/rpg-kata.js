@@ -20,12 +20,17 @@ export interface EventProps {
   /**
    * Specfic payload data for the event type
    */
-  data: any
+  data: any,
+
+  /**
+   * <optional> Specific ID for the event
+   */
+  id?: string
 }
 
 export function createEvent(payload: EventProps): Event {
   return new CloudEvent({
-    id: ksuid.randomSync().string,
+    id: payload.id || ksuid.randomSync().string,
     specversion: '1.0',
     ...payload
   })
