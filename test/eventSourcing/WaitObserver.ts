@@ -1,32 +1,54 @@
 import { Observer } from "../../lib/eventSourcing/eventBus";
 import { Event } from "../../lib/eventSourcing/event";
-const equal = require('fast-deep-equal/es6');
-
+import { Logger } from "../../lib/Logger";
+const equal = require("fast-deep-equal/es6");
 
 export interface WaitObserverParams {
   event: Partial<Event>;
   timeout?: number;
+  logger: Logger;
 }
 
 export class WaitObserver implements Observer {
   private received = false;
-  constructor(private params: WaitObserverParams) { }
+  private logger: Logger;
+  private event: Partial<Event>;
+  private timeout: number;
+  private timeWaited = 0;
+  private waitIncrement = 1;
+  constructor({ event, logger, timeout }: WaitObserverParams) {
+    this.event = event;
+    this.timeout = timeout || 10;
+    this.logger = logger;
+  }
 
   async onEvent(event: Event): Promise<void> {
-    console.log("Event Recieved")
-    this.received = partialEvent(this.params.event)(event);
+    this.logger.log({ message: "Event Received" });
+    this.received = partialEvent(this.event)(event);
     return Promise.resolve();
   }
 
   async wait() {
-    await sleep(this.params.timeout || 10);
+    if (this.timeWaited >= this.timeout) {
+      return Promise.reject();
+    }
 
     if (this.received) {
       return Promise.resolve();
     }
-    return Promise.reject();
+
+    return this.backOff();
+  }
+
+  private async backOff(): Promise<void> {
+
+    await sleep(this.waitIncrement);
+    this.timeWaited += this.waitIncrement;
+    this.waitIncrement *= 2;
+    return this.wait();
   }
 }
+
 export async function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }

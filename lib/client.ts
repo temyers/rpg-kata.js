@@ -1,6 +1,7 @@
 import {character, Character, AttackParams, HealParams, CharacterClass} from './Character'
 import { EventBus } from './eventSourcing/eventBus';
 import { eventSourceClient as client } from './eventSourcing/rpgEventSourceClient'
+import { Logger } from './Logger';
 
 export interface Client {
   character: (charClass: string) => Character
@@ -8,9 +9,9 @@ export interface Client {
 
 }
 
-export function eventSourceClient(bus: EventBus): Client {
+export function eventSourceClient(bus: EventBus, logger: Logger): Client {
   // console.log("Using EventSourced client")
-  return client(bus);
+  return client(bus, logger);
 }
 
 export function standardClient(): Client {

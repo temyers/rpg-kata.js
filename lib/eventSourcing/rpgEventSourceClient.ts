@@ -3,16 +3,17 @@ import { EventBus } from "./eventBus";
 import { EventProps, Event, createEvent as baseEvent } from "./event";
 import { EventSourceCharacter } from "./EventSourceCharacter";
 import { CharacterClass } from "../Character";
-export function eventSourceClient(eventBus: EventBus): Client {
+import { Logger } from "../Logger";
+export function eventSourceClient(eventBus: EventBus, logger:Logger): Client {
   return {
     character: (charClass: string) => {
-      console.warn(
-        "Synchronous operations are deprecated.  This method shall be removed"
+      logger.warn(
+        {message:"Synchronous operations are deprecated.  This method shall be removed"}
       );
       return EventSourceCharacter.builderSync(eventBus, charClass);
     },
-    characterAsync: async (charClass: CharacterClass) => {
-      const character = await EventSourceCharacter.builder(eventBus, charClass);
+    characterAsync: async (characterClass: CharacterClass) => {
+      const character = await EventSourceCharacter.builder({eventBus, characterClass, logger});
       return character;
     },
   };

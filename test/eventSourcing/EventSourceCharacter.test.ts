@@ -2,8 +2,11 @@ import { createEvent, Event } from "../../lib/eventSourcing/event";
 import { EventBus } from "../../lib/eventSourcing/eventBus";
 import { InMemoryEventBus } from "../../lib/eventSourcing/eventBus-memory";
 import { EventSourceCharacter } from "../../lib/eventSourcing/EventSourceCharacter";
+import { NullLogger } from "../../lib/Logger";
 import { EventLog, givenAnEventLog } from "./EventLog";
 const { expect } = require("chai");
+
+const logger=NullLogger()
 
 describe("EventSourceCharacter", function () {
   describe("builder", function () {
@@ -45,7 +48,7 @@ describe("EventSourceCharacter", function () {
     });
 
     async function whenIBuildANewCharacter(bus: EventBus) {
-      return await EventSourceCharacter.builder(bus, "melee");
+      return await EventSourceCharacter.builder({eventBus: bus, characterClass: "melee", logger});
     }
 
     interface CharacterCreatedParams {

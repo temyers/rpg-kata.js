@@ -3,15 +3,17 @@ import { createEvent } from "../../lib/eventSourcing/event";
 import { InMemoryEventBus } from "../../lib/eventSourcing/eventBus-memory";
 import { GameServer } from "../../lib/eventSourcing/GameServer";
 import { expect } from "chai";
+import { NullLogger } from "../../lib/Logger";
 describe("GameServer", () => {
   it("should handle CreateCharacterRequest events", async function () {
-    const bus = new InMemoryEventBus();
-    const server = new GameServer(bus);
+    const eventBus = new InMemoryEventBus();
+    const logger = NullLogger()
+    new GameServer({eventBus, logger});
 
-    const eventLog = new EventLog(bus);
+    const eventLog = new EventLog(eventBus);
 
     const id = "MyCreatedCharacter";
-    bus.publish(
+    eventBus.publish(
       createEvent({
         type: "CreateCharacterRequest",
         data: {},

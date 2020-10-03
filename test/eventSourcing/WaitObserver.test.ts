@@ -1,8 +1,10 @@
 import { expect } from "chai";
 import { createEvent } from "../../lib/eventSourcing/event";
+import { NullLogger } from "../../lib/Logger";
 import { WaitObserver, sleep } from "./WaitObserver";
 const equal = require('fast-deep-equal/es6')
 
+const logger = NullLogger()
 describe("WaitObserver", function () {
   beforeEach(function () {
     this.waitObserver = givenAnObserver();
@@ -82,6 +84,7 @@ function givenAnObserver() {
       source: "WaitObserver.test",
       data: {},
     },
+    logger,
   });
 }
 

@@ -13,16 +13,23 @@ import {
 } from "./rpgEventSourceClient";
 import { AsyncCharacter } from "../client";
 import { WaitObserver } from "../../test/eventSourcing/WaitObserver";
+import { Logger, NullLogger } from "../Logger";
+
+export interface BuilderParams{
+  eventBus: EventBus,
+  logger: Logger,
+  characterClass: CharacterClass
+}
 
 export class EventSourceCharacter implements AsyncCharacter, Observer {
   private character: Character;
   private waiters:WaitObserver[]  = []
-  private constructor(eventBus: EventBus, characterClass: CharacterClass) {
+  private constructor(eventBus: EventBus, characterClass: CharacterClass, private logger: Logger) {
     eventBus.register(this);
     this.character = tempCharacter(characterClass);
   }
 
-  // TEMPORARY - for backward compatability whilst implementing event sourcing
+  // TEMPORARY - for backward compatibility whilst implementing event sourcing
   set health(newVal) {
     this.character.health = newVal;
   }
@@ -59,32 +66,33 @@ export class EventSourceCharacter implements AsyncCharacter, Observer {
     return this.character._location
   }
 
-  // END_TEMPORARY - for backward compatability whilst implementing event sourcing
+  // END_TEMPORARY - for backward compatibility whilst implementing event sourcing
   public static builderSync(
     eventBus:EventBus, characterClass: string
   ): Character{
     if("melee" !== characterClass && "ranged" !== characterClass){
       throw new Error("illegal character class")
     }
-    const character = new EventSourceCharacter(eventBus, characterClass);
+    const character = new EventSourceCharacter(eventBus, characterClass, NullLogger());
     return character
   }
+
   public static async builder(
-    eventBus: EventBus,
-    characterClass: CharacterClass
+    params: BuilderParams
   ): Promise<AsyncCharacter> {
-    const character = new EventSourceCharacter(eventBus, characterClass);
+    const {eventBus, characterClass, logger} = params
+    const character = new EventSourceCharacter(eventBus, characterClass, logger);
     
     const createCharacterCommand = character.createEvent({ characterClass });
     // Start the wait process before publishing the create request to avoid race conditions
     const characterCreatedEvent = character.characterCreated(createCharacterCommand.id)
     eventBus.publish(createCharacterCommand);
-    console.log("Published CreateCharacterRequest")
+    logger.log({message: "Published CreateCharacterRequest"})
     
     await characterCreatedEvent
-    console.log("Received CharacterCreatedEvent response")
+    logger.log({message:"Received CharacterCreatedEvent response"})
     
-    console.log("Returning Character")
+    logger.log({message:"Returning Character"})
     return Promise.resolve(character);
   }
 
@@ -103,7 +111,7 @@ export class EventSourceCharacter implements AsyncCharacter, Observer {
   attack(params: AttackParams) {
     const {target, damage} = params
     if(target instanceof EventSourceCharacter){
-      // unwrap the target character to maintain backward compatability
+      // unwrap the target character to maintain backward compatibility
       const wrappedCharacter = (target as EventSourceCharacter).character;
       this.character.attack({
         target: wrappedCharacter,
@@ -156,15 +164,17 @@ export class EventSourceCharacter implements AsyncCharacter, Observer {
   }
 
   private async characterCreated(id: string){
+    const logger = this.logger;
     const waiter = new WaitObserver({
       timeout: 1000,
       event: {
         type: "CharacterCreatedEvent",
         id
-      }
+      },
+      logger
     })
     this.waiters.push(waiter)
-    console.log("Waiting for character to be created")
+    logger.log({message: "Waiting for character to be created"})
     return waiter.wait()
   }
 
