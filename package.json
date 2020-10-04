@@ -16,9 +16,9 @@
   "scripts": {
     "test:unit": "mocha -r ts-node/register/transpile-only test/**/*.test.ts",
     "test:accept": "cucumber-js",
-    "test": "npm-run-all --silent -c test:standard test:eventSourcing",
-    "test:standard": "npm-run-all --silent -c test:unit test:accept",
-    "test:eventSourcing": "FF_EVENTSOURCE=true npm-run-all --silent -c test:unit test:accept",
+    "test": "npm-run-all --silent -c test:unit test:standard test:eventSourcing",
+    "test:standard": "npm-run-all --silent -c test:accept",
+    "test:eventSourcing": "FF_EVENTSOURCE=true npm-run-all --silent -c test:accept",
     "test:coverage": "nyc npm-run-all --silent -c test:unit test:accept",
     "watch": "npm-watch"
   },

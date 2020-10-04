@@ -1,36 +1,22 @@
 import { sleep } from "../../test/eventSourcing/WaitObserver";
 import { Logger } from "../Logger";
+import { CreateCharacterCommandHandler } from "./createCharacter/CreateCharacterCommandHandler";
 import { createEvent } from "./event";
 import { EventBus } from "./eventBus";
+import { EventStore } from "./eventStore";
 
 export interface GameServerParams {
   eventBus: EventBus,
-  logger: Logger
+  logger: Logger,
+  eventStore: EventStore
 }
 export class GameServer {
   private eventBus: EventBus;
-  private logger: Logger;
-  constructor({eventBus, logger}: GameServerParams) {
+  constructor(params: GameServerParams) {
+    const {eventBus, logger, eventStore} = params
     this.eventBus = eventBus
-    this.logger = logger
 
-    // TODO - extract to CommandHandler
-    this.eventBus.register({
-      async onEvent(event){
-        if("CreateCharacterRequest" === event.type){
-          // simulate time to process a request
-          await sleep(10)
-          logger.log({message:"publishing CharacterCreatedEvent"})
-          eventBus.publish(createEvent({
-            type: "CharacterCreatedEvent",
-            data: {},
-            source: "EventSourceGameServer",
-            id: event.id
-          }))
-        }
-        Promise.resolve()
-      }
-    })
+    this.eventBus.register(new CreateCharacterCommandHandler(params))
 
   }
 }

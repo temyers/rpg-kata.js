@@ -17,6 +17,20 @@
     ],
     "type": "node"
   },
+  {
+    "name": "NPM test:standard",
+    "request": "launch",
+    "runtimeArgs": [
+      "run",
+      "test:standard"
+    ],
+    "runtimeExecutable": "npm",
+    "skipFiles": [
+      "<node_internals>/**",
+      "node_modules/**"
+    ],
+    "type": "node"
+  },
     {
       "type": "node",
       "request": "launch",
