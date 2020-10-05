@@ -10,19 +10,15 @@ import { eventSourceClient as client } from "./eventSourcing/rpgEventSourceClien
 import { Logger } from "./Logger";
 
 export interface Client {
-  character: (charClass: string) => Character;
   characterAsync: (charClass: CharacterClass) => Promise<AsyncCharacter>;
 }
 
 export function eventSourceClient(bus: EventBus, logger: Logger): Client {
-  // console.log("Using EventSourced client")
   return client(bus, logger);
 }
 
 export function standardClient(): Client {
-  // console.log("Using Standard client")
   return {
-    character,
     characterAsync,
   };
 }

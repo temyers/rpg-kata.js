@@ -19,7 +19,7 @@
     "test": "npm-run-all --silent -c test:unit test:standard test:eventSourcing",
     "test:standard": "npm-run-all --silent -c test:accept",
     "test:eventSourcing": "FF_EVENTSOURCE=true npm-run-all --silent -c test:accept",
-    "test:coverage": "nyc npm-run-all --silent -c test:unit test:accept",
+    "test:coverage": "nyc npm-run-all --silent -c test:unit test:accept test:eventSourcing",
     "watch": "npm-watch"
   },
   "repository": {

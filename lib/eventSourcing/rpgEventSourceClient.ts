@@ -6,12 +6,6 @@ import { CharacterClass } from "../Character";
 import { Logger } from "../Logger";
 export function eventSourceClient(eventBus: EventBus, logger:Logger): Client {
   return {
-    character: (charClass: string) => {
-      logger.warn(
-        {message:"Synchronous operations are deprecated.  This method shall be removed"}
-      );
-      return EventSourceCharacter.builderSync(eventBus, charClass);
-    },
     characterAsync: async (characterClass: CharacterClass) => {
       const character = await EventSourceCharacter.builder({eventBus, characterClass, logger});
       return character;
