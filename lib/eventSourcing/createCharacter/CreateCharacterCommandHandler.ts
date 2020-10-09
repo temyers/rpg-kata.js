@@ -18,6 +18,8 @@ export class CreateCharacterCommandHandler implements Observer {
     this.eventBus = eventBus;
     this.eventStore = eventStore;
     this.logger = logger;
+
+    eventBus.register(this)
   }
 
   async onEvent(event: Event) {
@@ -25,14 +27,20 @@ export class CreateCharacterCommandHandler implements Observer {
       // simulate time to process a request
       await sleep(5);
       this.logger.log({ message: "publishing CharacterCreatedEvent" });
+      const characterCreated = createEvent({
+        type: "CharacterCreatedEvent",
+        data: {
+          id: event.id
+        },
+        source: "EventSourceGameServer",
+        id: event.id,
+      })
+      await this.eventStore.put(characterCreated)
+
       this.eventBus.publish(
-        createEvent({
-          type: "CharacterCreatedEvent",
-          data: {},
-          source: "EventSourceGameServer",
-          id: event.id,
-        })
+        characterCreated
       );
+
     }
     Promise.resolve();
   }

@@ -3,10 +3,11 @@ import { EventStore } from "../../lib/eventSourcing/eventStore"
 const { expect } = require("chai")
 import { createEvents, createEvent } from "./mockEvent"
 import { Event, byAggregate } from "../../lib/eventSourcing/event"
+import { fail } from "assert"
 
 type EventStoreFactory = () => EventStore
 
-function eventStoreSpec(factory:EventStoreFactory){
+export function eventStoreSpec(factory:EventStoreFactory){
   describe("Event Store", () => {
     let eventStore: EventStore 
     beforeEach( () => {
@@ -50,6 +51,7 @@ function eventStoreSpec(factory:EventStoreFactory){
         
         expect(actual).to.iterate.over([event1,event2])
       })
+
     })
 
     describe("When event store contains items", () => {
@@ -73,6 +75,7 @@ function eventStoreSpec(factory:EventStoreFactory){
           const expected = expectedEvents.filter(byAggregate('aggregate2'))
           const actual = await eventStore.getAllByAggregate('aggregate2')
           expect(actual).to.iterate.over(expected)
+
         })
       })
     })

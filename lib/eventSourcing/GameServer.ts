@@ -16,7 +16,7 @@ export class GameServer {
     const {eventBus, logger, eventStore} = params
     this.eventBus = eventBus
 
-    this.eventBus.register(new CreateCharacterCommandHandler(params))
-
+    // this.eventBus.register(new CreateCharacterCommandHandler(params))
+    new CreateCharacterCommandHandler(params)
   }
 }
