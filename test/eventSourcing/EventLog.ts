@@ -22,10 +22,47 @@ export class EventLog implements Observer {
       const matchingEvent = nonMatchingKey === undefined
       return matchingEvent
     }
-    const found = this.recordedEvents.find(partialEvent)
+    const found = this.find(event)
     
     return found ? Promise.resolve(found) : Promise.reject()
     
+  }
+
+  private find(event: Partial<Event>): Event | undefined{
+    const findNonMatchingKeys = (sourceObject: any, expectedMatch: any): string | undefined => {
+      return Object.keys(expectedMatch).find(key => {
+        if(sourceObject[key] instanceof Object){
+          return findNonMatchingKeys(sourceObject[key], expectedMatch[key]) !== undefined
+        }
+        return sourceObject[key] !== expectedMatch[key]
+      })
+    }
+
+    const partialEvent = (e:Event) => {
+      const nonMatchingKey = findNonMatchingKeys(e, event);
+      const matchingEvent = nonMatchingKey === undefined
+      return matchingEvent
+    }
+    return this.recordedEvents.find(partialEvent)
+  }
+
+  contains(event: Partial<Event>):boolean {
+    const findNonMatchingKeys = (sourceObject: any, expectedMatch: any) => {
+      Object.keys(expectedMatch).find(key => {
+        if(sourceObject[key] instanceof Object){
+          return findNonMatchingKeys(sourceObject[key], expectedMatch[key])
+        }
+        return sourceObject[key] !== expectedMatch[key]
+      })
+    }
+
+    const partialEvent = (e:Event) => {
+      const nonMatchingKey = findNonMatchingKeys(e, event);
+      const matchingEvent = nonMatchingKey === undefined
+      return matchingEvent
+    }
+    return this.recordedEvents.find(partialEvent) !== undefined
+
   }
 }
 export async function sleep(ms: number) {

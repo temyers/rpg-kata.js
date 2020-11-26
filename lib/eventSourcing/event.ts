@@ -3,6 +3,7 @@ const ksuid = require('ksuid')
 
 export interface EventData {
   id?: string
+  correlationId?: string
 }
 export interface Event extends CloudEventV1 {
   data: EventData

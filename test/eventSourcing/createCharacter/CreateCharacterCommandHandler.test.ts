@@ -7,6 +7,8 @@ import { InMemoryEventStore } from "../../../lib/eventSourcing/eventStore-memory
 import { NullLogger } from "../../../lib/Logger";
 import { EventLog } from "../EventLog";
 import { expect } from "chai";
+import {fake} from 'sinon';
+import { fail } from "assert";
 
 describe("CreateCharacterCommandHandler", function () {
   beforeEach(function () {
@@ -41,6 +43,28 @@ describe("CreateCharacterCommandHandler", function () {
     await thenTheCharacterCreatedEventShouldBeStoredInTheEventStore(this.eventStore);
   });
 
+  it("should create a correlationId in the event, using the requestID", async function (){
+    const asyncWait = givenIExpectACharacterCreatedEvent(this.log)
+    const createRequest = whenACreateCharacterRequestIsPublished(this.eventBus);
+    await thenACharacterCreatedEventShouldBeReceived(asyncWait)
+    thenACharacterCreatedEventShouldContain(this.log,{
+      data: {
+        correlationId: createRequest.id
+      }
+    })
+  })
+
+  it("should generate a unique id for the event", async function(){
+    const asyncWait = givenIExpectACharacterCreatedEvent(this.log)
+    whenACreateCharacterRequestIsPublished(this.eventBus);
+    whenACreateCharacterRequestIsPublished(this.eventBus);
+    await thenACharacterCreatedEventShouldBeReceived(asyncWait)
+  })
+
+  function thenACharacterCreatedEventShouldContain(log: EventLog, contents: Partial<Event>){
+    expect(log.contains(contents)).to.be.true
+  }
+
   function givenIExpectACharacterCreatedEvent(log: EventLog){
     return log.waitFor({
       type: "CharacterCreatedEvent",
@@ -66,14 +90,25 @@ async function thenTheCharacterCreatedEventShouldBeStoredInTheEventStore(eventSt
   expect(actual).to.deep.iterate.over([expectedEvent]);
 }
 
-function whenACreateCharacterRequestIsPublished(eventBus: any) {
+function givenAnEvent(): Event {
+  return createEvent({
+    type: "CreateCharacterRequest",
+    id: "createRequestId",
+    data: {},
+    source: "CreateCharacterCommandHandler.test",
+  })
+}
+
+function whenACreateCharacterRequestIsPublished(eventBus: EventBus): Event {
+  const event = createEvent({
+    type: "CreateCharacterRequest",
+    id: "createRequestId",
+    data: {},
+    source: "CreateCharacterCommandHandler.test",
+  })
   eventBus.publish(
-    createEvent({
-      type: "CreateCharacterRequest",
-      id: "createRequestId",
-      data: {},
-      source: "CreateCharacterCommandHandler.test",
-    })
+    event
   );
+  return event
 }
 
