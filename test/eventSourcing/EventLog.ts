@@ -47,17 +47,17 @@ export class EventLog implements Observer {
   }
 
   contains(event: Partial<Event>):boolean {
-    const findNonMatchingKeys = (sourceObject: any, expectedMatch: any) => {
-      Object.keys(expectedMatch).find(key => {
+    const findNonMatchingKey = (sourceObject: any, expectedMatch: any): any | undefined => {
+      return Object.keys(expectedMatch).find(key => {
         if(sourceObject[key] instanceof Object){
-          return findNonMatchingKeys(sourceObject[key], expectedMatch[key])
+          return findNonMatchingKey(sourceObject[key], expectedMatch[key]) !== undefined
         }
         return sourceObject[key] !== expectedMatch[key]
       })
     }
 
     const partialEvent = (e:Event) => {
-      const nonMatchingKey = findNonMatchingKeys(e, event);
+      const nonMatchingKey = findNonMatchingKey(e, event);
       const matchingEvent = nonMatchingKey === undefined
       return matchingEvent
     }

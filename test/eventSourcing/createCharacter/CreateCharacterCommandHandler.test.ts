@@ -68,7 +68,10 @@ describe("CreateCharacterCommandHandler", function () {
   function givenIExpectACharacterCreatedEvent(log: EventLog){
     return log.waitFor({
       type: "CharacterCreatedEvent",
-      id: "createRequestId",
+      // id: "createRequestId",
+      data: {
+        correlationId: "createRequestId"
+      }
     });
   }
 

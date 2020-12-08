@@ -123,5 +123,20 @@ describe("EventLog", function () {
       );
       expect(this.eventLog.contains({ data: { id: "bar" } })).to.be.true;
     });
+
+    it("should fail deep match", function () {
+      this.eventLog.onEvent(
+        createEvent({
+          type: expectedEventType,
+          data: {
+            id: "bar",
+          },
+          source: "EventLog.test.ts",
+        })
+      );
+      expect(this.eventLog.contains({ data: { id: "baz" } })).to.be.false;
+    });
+
+    
   });
 });
